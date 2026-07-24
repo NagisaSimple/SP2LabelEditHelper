@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<link rel="icon" href="favicon_p-lab.ico">
+<head>
+	<meta charset="utf-8">
+	<title>TextLabel編集補助ツール</title>
+</head>
+<body>
+	<h2>TextLabel編集補助ツール</h2>
+		<details><summary>使用方法</summary>
+			1.必要な情報を入力<br>
+			2.<button onclick="Update()">更新&コピー</button>ボタンを押す<br>
+			3.結果をラベルにコピー&ペースト<br>
+		</details>
+	<hr>
+		<table>
+			<tr onmouseover="showMessage('font')"><th>フォント</th><td>
+			<select id="font">
+				<option value="default" selected>Default</option>
+				<option value="roboto">Roboto</option>
+				<option value="military">Military</option>
+				<option value="14seg">14-Segment</option>
+				<option value="stencil">Stencil</option>
+			</select></td></tr>
+			<tr onmouseover="showMessage('valign')"><th>整列(縦)</th><td>
+			<select id="valign">
+				<option value="top">Top</option>
+				<option value="middle" selected>Middle</option>
+				<option value="bottom">Bottom</option>
+			</select></td></tr>
+		</table>
+		<div id="units">
+		</div>
+		<hr>
+		<button onmouseover="showMessage('addUnit')" onclick="unitAdd()" style="width:100%; max-width:800px">追加</button>
+	<hr>
+	<button onclick="update()">更新&クリップボードにコピー</button><br>
+	<textarea id="labelCode" rows="1"></textarea><br>
+	<table>
+	<tr><th>
+		新規読込</th>
+		<td><input id="loadNew" type="file"/></td>
+	</tr>
+	<tr><th>
+		追加読込</th>
+		<td><input id="loadAdd" type="file"/></td>
+	</tr>
+	<tr>
+		<th>
+			保存
+		</th><td>
+		<button onclick="save()">保存</button><input id="saveName" type="text" placeholder="保存名" />
+		</td>
+	</tr></table>
+	<hr>
+	<table><tr>
+	<td id="message" valign="top" style="height:150px">項目にポインターを合わせるとここに説明が表示されます</td>
+	<tr></table>
+<a id="link"></a>
+</body>
+
+<datalist id="charList"></datalist>
+
+<script src="charData.js"></script>
+<script src="main.js"></script>
+</html>
