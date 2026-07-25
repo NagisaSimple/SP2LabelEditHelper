@@ -218,6 +218,7 @@ function convertUnit(unit){	//要素の変換処理
 	let sAngleList, eAngleList;
 	let unitXList, unitYList;	//基準点の座標
 	let endXList, endYList;
+	let alignScale = (unit.getElementsByClassName("align")[0].value == "center" ? 2 : 1);
 	switch(layoutType){
 		case "char":	//-----単体----------------------------------------------------
 			unitCount = Math.max(superSplit(unit.getElementsByClassName("pos")[0].value, 0).length,
@@ -399,9 +400,11 @@ function convertUnit(unit){	//要素の変換処理
 
 			for(let i = 0; i < unitCount; i++){
 				let lerpPList = [];
+				let lineMode;
 				switch(drawType){
 					case "char":
 						charList = superSplit(unit.getElementsByClassName("char")[0].value, divisionList[i]);
+						lineMode = superSplit(unit.getElementsByClassName("char")[0].value, 0).length == 1 && divisionList[i] > 1;
 						rotateList = superSplit(unit.getElementsByClassName("rotate")[0].value, divisionList[i]);
 						rotateOffset = unit.getElementsByClassName("rotateOffset")[0].checked;
 						scaleList = superSplit(unit.getElementsByClassName("scale")[0].value, divisionList[i]);
@@ -410,6 +413,7 @@ function convertUnit(unit){	//要素の変換処理
 						break;
 					case "line":
 						charList = superSplit("|", divisionList[i]);
+						lineMode = divisionList[i] > 1;
 						rotateList = superSplit("90", divisionList[i]);
 						rotateOffset = true;
 						let charSize = charSizeList["|"][document.getElementById("font").value];
@@ -433,9 +437,14 @@ function convertUnit(unit){	//要素の変換処理
 				let lineAngle = isNaN(unitXList[i]) || isNaN(unitYList[i]) || isNaN(endXList[i]) || isNaN(endYList[i]) ?
 								"atan2(" + endYList[i] + "-" + unitYList[i] + "," + endXList[i] + "-" + unitXList[i] + ")":
 								Math.atan2(endYList[i] - unitYList[i], endXList[i] - unitXList[i]) / Math.PI * 180;
+				let step = divisionList[i] > 1 ? lerpPList[1]-lerpPList[0] : 0.5;
+				let lineOffset = isNaN(unitYList[i]) || isNaN(endYList[i]) ?  "{(" + endYList[i].replace(/{/g,"(").replace(/}/g,")") + "-" + unitYList[i].replace(/{/g,"(").replace(/}/g,")") + ")*" + numFix(step * (divisionList[i] - 1)) + ";f6}" :
+																			numFix((endYList[i] - unitYList[i]) * step * (divisionList[i] - 1));
+				
+				console.log(lerpPList[1],lerpPList[0], lineOffset);
 				for(let j = 0; j < divisionList[i]; j++){
 					let X, Y;
-					if(isNaN(unitXList[i]) || isNaN(unitYList[i]) || isNaN(endXList[i]) || isNaN(endYList[i])){
+					if(isNaN(unitXList[i]) || isNaN(unitYList[i]) || isNaN(endXList[i]) || isNaN(endYList[i])){//座標計算
 						X = "lerp(" + unitXList[i] + "," + endXList[i] + "," + lerpPList[j] + ")";
 						Y = "lerp(" + unitYList[i] + "," + endYList[i] + "," + lerpPList[j] + ")";
 					}else{
@@ -443,7 +452,26 @@ function convertUnit(unit){	//要素の変換処理
 						Y = Number(unitYList[i]) + Number(lerpPList[j]) * (endYList[i] - unitYList[i]);
 					}
 					let rotate = rotateOffset ? (isNaN(lineAngle) || isNaN(rotateList[j]) ? lineAngle + "+" + rotateList[j] : Number(lineAngle) + Number(rotateList[j])) : Number(rotateList[j]);
-					text += buildChar({"font":document.getElementById("font").value, "align":unit.getElementsByClassName("align")[0].value,"char":charList[j], "size":sizeList[j],"scale":scaleList[j],"rotate":rotate,"color":colorList[j],"posX":X,"posY":Y});
+					if(lineMode){
+						if(j == 0){
+							text += "<line-height=" + (isNaN(endYList[i]) || (drawType == "line" && isNaN(unitYList[i])) ? "{(" + unitYList[i].replace(/{/g,"(").replace(/}/g,")") + "-" + endYList[i].replace(/{/g,"(").replace(/}/g,")") + ")" + "*" + numFix(step) + ";f6}" : numFix((unitYList[i] - endYList[i]) * step) ) + ">";
+							text += buildChar({"font":document.getElementById("font").value, "align":unit.getElementsByClassName("align")[0].value,"char":charList[j], "size":sizeList[j],"scale":scaleList[j],"rotate":rotate,"color":colorList[j],"posX":X,"posY":Y}).replace("<pos","<indent");
+						}else{
+							text += "<space=" + (isNaN(endXList[i]) || (drawType == "line" && isNaN(unitXList[i])) ?
+												"{(" + endXList[i].replace(/{/g,"(").replace(/}/g,")") + "-" + unitXList[i].replace(/{/g,"(").replace(/}/g,")") + ")" + "*" + numFix(step * j * alignScale) + ";f6}" :
+												numFix((endXList[i] - unitXList[i]) * step * j * alignScale)) + ">" + charList[j];
+							if(j < divisionList[i] - 1)
+								text += "<br>";
+						}
+					}else{
+						text += buildChar({"font":document.getElementById("font").value, "align":unit.getElementsByClassName("align")[0].value,"char":charList[j], "size":sizeList[j],"scale":scaleList[j],"rotate":rotate,"color":colorList[j],"posX":X,"posY":Y});
+					}
+				}
+
+				if(lineMode){
+					let lineOffset = isNaN(unitYList[i]) || isNaN(endYList[i]) ?  "{(" + endYList[i].replace(/{/g,"(").replace(/}/g,")") + "-" + unitYList[i].replace(/{/g,"(").replace(/}/g,")") + ")*" + numFix(step * (divisionList[i] - 1)) + ";f6}" :
+																				numFix((endYList[i] - unitYList[i]) * step * (divisionList[i] - 1));
+					text += "<line-height=" + lineOffset + "><br><line-height=0>"
 				}
 				text += "\n";
 			}

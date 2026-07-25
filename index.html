@@ -7,11 +7,6 @@
 </head>
 <body>
 	<h2>TextLabel編集補助ツール</h2>
-		<details><summary>使用方法</summary>
-			1.必要な情報を入力<br>
-			2.<button onclick="Update()">更新&コピー</button>ボタンを押す<br>
-			3.結果をラベルにコピー&ペースト<br>
-		</details>
 	<hr>
 		<table>
 			<tr onmouseover="showMessage('font')"><th>フォント</th><td>
@@ -37,15 +32,15 @@
 	<button onclick="update()">更新&クリップボードにコピー</button><br>
 	<textarea id="labelCode" rows="1"></textarea><br>
 	<table>
-	<tr><th>
+	<tr onmouseover="showMessage('loadNew')"><th>
 		新規読込</th>
 		<td><input id="loadNew" type="file"/></td>
 	</tr>
-	<tr><th>
+	<tr onmouseover="showMessage('loadAdd')"><th>
 		追加読込</th>
 		<td><input id="loadAdd" type="file"/></td>
 	</tr>
-	<tr>
+	<tr onmouseover="showMessage('save')">
 		<th>
 			保存
 		</th><td>

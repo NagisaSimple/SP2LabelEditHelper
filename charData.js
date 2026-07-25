@@ -51,7 +51,10 @@ const messageList = {
 	"posL":"線の始点座標~終点座標",
 
 	"addUnit":"要素を追加",
-	"deleteUnit":"要素を削除"
+	"deleteUnit":"要素を削除",
+	"loadNew":"現在の編集内容を破棄してjsonを読込",
+	"loadAdd":"現在の編集内容の末尾に付け加える形でjsonを読込",
+	"save":"現在の編集内容をjson形式で保存"
 }
 /*
 以下、メモ書き的な物
