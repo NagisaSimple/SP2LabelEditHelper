@@ -645,7 +645,8 @@ function numFix(text){		//0.9999999999みたいになる奴を修正
 
 function update(){	//ラベル組み立て
 	lastCharSetting = {"font":document.getElementById("font").value, "align":"あ", "char":"あ", "size":"あ", "scale":"あ", "rotate":"あ", "color":"あ", "posX":"あ", "posY":"あ"}
-	let text = "<size=0.000000001>.<line-height=0><br>";
+	let text = "<size=0><line-height=0><br>";
+	//let text = "<size=0.000000001>.<line-height=0><br>";
 	let unitList = document.getElementsByClassName("unit");
 	for(let i = 0; i < unitList.length; i++){
 		text += convertUnit(unitList[i]);
