@@ -205,7 +205,7 @@ function convertUnit(unit){	//要素の変換処理
 			text = "{false?\"" + name + "\":\"\"}";
 		else
 			text = "";
-		return text + "\n";
+		return text + "<br>";	//"\n"
 	}
 	
 	let unitCount;	//配置の反復回数
@@ -317,7 +317,7 @@ function convertUnit(unit){	//要素の変換処理
 					let rotate = rotateOffset ? (isNaN(pAngle) || isNaN(rotateList[j]) ? pAngle + "+" + rotateList[j] : Number(pAngle) + Number(rotateList[j])) : Number(rotateList[j]);
 					text += buildChar({"font":document.getElementById("font").value, "align":unit.getElementsByClassName("align")[0].value,"char":charList[j], "size":sizeList[j],"scale":scaleList[j],"rotate":rotate,"color":colorList[j],"posX":cos,"posY":sin});
 				}
-				text += "\n";
+				text += "<br>";	//"\n"
 			}
 			break;
 		case "circle2":	//-----円弧----------------------------------------------------
@@ -384,7 +384,7 @@ function convertUnit(unit){	//要素の変換処理
 					let rotate = rotateOffset ? (isNaN(pAngleList[j]) || isNaN(rotateList[j]) ? pAngleList[j] + "+" + rotateList[j] : Number(pAngleList[j]) + Number(rotateList[j])) : Number(rotateList[j]);
 					text += buildChar({"font":document.getElementById("font").value, "align":unit.getElementsByClassName("align")[0].value,"char":charList[j], "size":sizeList[j],"scale":scaleList[j],"rotate":rotate,"color":colorList[j],"posX":cos,"posY":sin});
 				}
-				text += "\n";
+				text += "<br>";	//"\n"
 			}
 			break;
 		case "line":	//-----直線----------------------------------------------------
@@ -473,11 +473,11 @@ function convertUnit(unit){	//要素の変換処理
 																				numFix((endYList[i] - unitYList[i]) * step * (divisionList[i] - 1));
 					text += "<line-height=" + lineOffset + "><br><line-height=0>"
 				}
-				text += "\n";
+				text += "<br>";	//"\n"
 			}
 			break;
 	}
-	return text + "\n";
+	return text + "<br>";	//"\n"
 }
 
 function buildChar(charSetting){		//設置する文字の誤差を補正し、サイズや角度等とあわせてタグを組み立てる
@@ -645,12 +645,12 @@ function numFix(text){		//0.9999999999みたいになる奴を修正
 
 function update(){	//ラベル組み立て
 	lastCharSetting = {"font":document.getElementById("font").value, "align":"あ", "char":"あ", "size":"あ", "scale":"あ", "rotate":"あ", "color":"あ", "posX":"あ", "posY":"あ"}
-	let text = "<size=0><line-height=0>\n";
+	let text = "<size=0><line-height=0><br>";
 	let unitList = document.getElementsByClassName("unit");
 	for(let i = 0; i < unitList.length; i++){
 		text += convertUnit(unitList[i]);
 	}
-	text += "<size=0></voffset>.\n";
+	//text += "<size=0><voffset=0>.";
 	labelCode.value = text;
 	labelCodeCopy()
 }
