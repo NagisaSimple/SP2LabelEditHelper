@@ -477,7 +477,7 @@ function convertUnit(unit){	//要素の変換処理
 			}
 			break;
 	}
-	return text + "<br>";	//"\n"
+	return text + "\n";	//ユニット区切り
 }
 
 function buildChar(charSetting){		//設置する文字の誤差を補正し、サイズや角度等とあわせてタグを組み立てる
@@ -645,13 +645,12 @@ function numFix(text){		//0.9999999999みたいになる奴を修正
 
 function update(){	//ラベル組み立て
 	lastCharSetting = {"font":document.getElementById("font").value, "align":"あ", "char":"あ", "size":"あ", "scale":"あ", "rotate":"あ", "color":"あ", "posX":"あ", "posY":"あ"}
-	let text = "<size=0><line-height=0><br>";
-	//let text = "<size=0.000000001>.<line-height=0><br>";
+	let text = "<size=0><line-height=0>\n";
 	let unitList = document.getElementsByClassName("unit");
 	for(let i = 0; i < unitList.length; i++){
 		text += convertUnit(unitList[i]);
 	}
-	//text += "<size=0><voffset=0>.";
+	text += "<size=0><voffset=0>.";
 	labelCode.value = text;
 	labelCodeCopy()
 }
